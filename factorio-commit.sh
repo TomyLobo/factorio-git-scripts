@@ -33,15 +33,16 @@ save_base_path="$(cygpath "$APPDATA")/Factorio/saves"
 echo 'Scanning saves...'
 
 args=()
-maxticks=0
+maxcriterion=0
 maxbasename=
 for archive in "$save_base_path"/*.zip; do
     basename="$(basename "$archive" .zip)"
     ticks="$(playtime "$archive")"
     playtime="$(format_playtime "$ticks")"
+    criterion="$(stat --printf %Z "$archive")"
 
-    if [ "$ticks" -gt "$maxticks" ]; then
-        maxticks="$ticks"
+    if [ "$criterion" -gt "$maxcriterion" ]; then
+        maxcriterion="$criterion"
         maxbasename="$basename"
     fi
 
